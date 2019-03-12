@@ -1,0 +1,218 @@
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>TODO</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+        crossorigin="anonymous">
+    <link rel="icon" href="/images/tree.ico">
+    <style>
+        #frmNote {
+            position: absolute;
+            left: 10%;
+            top: 5%;
+            border-radius: 1%;
+            background-color: rgba(0, 0, 0, 0.4);
+            color: white;
+            height: 90%;
+        }
+
+        table {
+            height: auto;
+            overflow: scroll;
+            max-height: 200px;
+            box-shadow: 5px 5px rgba(0, 0, 0, 0.7);
+        }
+
+        body {
+            background-image: url("/images/forest.jpg");
+            background-size: contain;
+            background-repeat: repeat-x;
+        }
+
+        .p-3 {
+            padding: 40 !important;
+        }
+
+        #btnAdd {
+            background-color: rgba(0, 255, 42, 0.4);
+            color: white;
+            margin-top: -5px;
+        }
+
+        #note {
+            background-color: rgba(0, 0, 0, 0.6);
+            color: white;
+            border: none;
+        }
+
+        #notetable {
+            background-color: rgba(0, 0, 0, 0.4);
+            color: white;
+        }
+
+        @media screen and (min-width: 200px) and (max-width:1050px) {
+            body {
+                background-size: cover;
+                background-repeat: no-repeat;
+            }
+
+            #btnAdd {
+                margin-top: 10px;
+                float: right;
+            }
+
+            #dropdown {
+                margin-left: -20px;
+            }
+
+            .clear{
+                clear: both;
+            }
+        }
+
+        button{
+            text-shadow: 1px 1px black;
+            font-weight: bold;
+        }
+
+        table button {
+            float: right;
+        }
+
+        button:hover {
+            opacity: 0.8;
+            font-weight: bold;
+        }
+
+        .dropdown:hover>.dropdown-menu {
+            display: block;
+        }
+
+        table tr:hover {
+            font-weight: bold;
+        }
+
+        table thead {
+            background-color: rgba(11, 240, 22, 0.4);
+        }
+
+        .dropdown>.dropdown-toggle:active {
+            /*Without this, clicking will make it sticky*/
+            pointer-events: none;
+        }
+
+        #dropdown {
+            background-color: rgba(0, 0, 0, 0.4);
+            color: white;
+            border: none;
+            position: absolute;
+            left: 94%;
+            margin-top: -150px;
+        }
+
+        #ddmenu {
+            background-color: rgba(0, 0, 0, 0.4);
+            color: white;
+            border: none;
+            position: absolute;
+            left: 94%;
+            margin-top: -120px;
+        }
+
+        #ddmenu a {
+            text-decoration: none;
+            color: white;
+        }
+
+        #ddmenu a:hover {
+            background-color: rgba(0, 0, 0, 0.4);
+            font-weight: bold;
+        }
+
+        #note:focus{
+            background-color: rgba(29, 28, 28, 0.479);
+        }
+    </style>
+    <script>
+        //Prevent form from resubmission
+        if (window.history.replaceState) {
+            window.history.replaceState(null, null, window.location.href);
+        }
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <form method="post" style="width: 80%; padding: 5px" id="frmNote" class="p-3">
+            <h3 style="text-shadow: 3px 3px black; color:lightgreen; text-align:center; font-weight:bold; margin-left:-50px;">
+                <img src="/images/growth.png" width="100" height="100"> WHAT TO DO?</h3>
+            <div class="form-group">
+                <label>
+                    <h5 style="text-shadow: 2px 2px black;" class="d-inline p-2">
+                        <img src="/images/note.ico" width="36" height="24"> Note: </h5>
+                </label>
+                <div class="container">
+                    <div class="dropdown">
+                        <button id="dropdown" class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                            More
+                        </button>
+                        <div id="ddmenu" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="#">Profile</a>
+                            <a class="dropdown-item" href="#">Change password</a>
+                            <a class="dropdown-item" href="/logout">Log out</a>
+                        </div>
+                    </div>
+                </div>
+                <input name="note" id="note" type="text" class="form-control d-inline" style="width:85.5%; height:45px" placeholder="What are you gonna do?">
+                <button name="submit" formaction="/todo/add" id="btnAdd" type="submit" class="btn btn-default d-inline" style="width:150px; padding: 10px">Add
+                    <img src="/images/add.ico" width="24" height="24">
+                </button>
+                <div class="clear"></div>
+            </div>
+            <div style="height:65%; overflow: auto">
+                <table class="table table-borderless" id="notetable">
+                    <thead>
+                        <tr>
+                            <th scope="col">No.</th>
+                            <th scope="col">Note</th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% if(notes.length >= 0) { %>
+                            <% notes.forEach(function(note, index){ %>
+                                <tr>
+                                    <th scope="row">
+                                        <%= Number(index)+1 %>
+                                    </th>
+                                    <% if(note.done == true) { %>
+                                        <td>
+                                            <strike>
+                                                <%= note.content %>
+                                            </strike>
+                                        </td>
+                                        <% } else { %>
+                                            <td>
+                                                <%= note.content %>
+                                            </td>
+                                            <td>
+                                                <button name="done" id="btnAdd" formaction="/todo/done" value="<%= index %>" type="submit" class="btn btn-default d-inline" style="width:100px">Done
+                                                    <img src="/images/tick.ico" width="24" height="24">
+                                                </button>
+                                            </td>
+                                        <% } %>
+                                </tr>
+                                <% }); %>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>
