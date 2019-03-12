@@ -1,6 +1,6 @@
 var express = require('express');
 var app = express();
-const port = process.env.port;
+const port = process.env.PORT;
 
 var notes = [{content: "Do something", done:false}];
 var i = 0;
