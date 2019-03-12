@@ -2,7 +2,7 @@ var express = require('express');
 var app = express();
 const port = process.env.PORT;
 
-var notes = [{content: "Do something", done:false}];
+var notes = [];
 var i = 0;
 var alert;
 
