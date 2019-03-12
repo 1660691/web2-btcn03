@@ -1,5 +1,6 @@
 var express = require('express');
 var app = express();
+const port = process.env.port;
 
 var notes = [{content: "Do something", done:false}];
 var i = 0;
@@ -101,6 +102,6 @@ app.get('/logout', function (req, res) {
 	return res.redirect('/');
 });
 
-app.listen(3000, function () {
-	console.log('app is running at port 3000');
+app.listen(port, function () {
+	console.log('app is running at port ' . port);
 });
